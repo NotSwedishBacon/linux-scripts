@@ -1,4 +1,4 @@
-# linux-scripts
+# NotSwedishBacon's linux scripts
 
 Useful Linux scripts for setting up Fedora Atomic or minimal desktop installations.
 
