@@ -26,6 +26,21 @@ How to run:
 bash scripts/installdiscord.sh
 ```
 
+### `scripts/disable_raop.sh`
+
+Disables RAOP (AirPlay) support in PipeWire by writing a local PipeWire override file.
+
+What it does:
+- Creates `/etc/pipewire/pipewire.conf.d`
+- Writes `disable-raop.conf` to disable the RAOP module
+- Restarts the user PipeWire services `pipewire` and `pipewire-pulse`
+
+How to run:
+
+```bash
+bash scripts/disable_raop.sh
+```
+
 ### `scripts/fix_kde_google_integration.sh`
 
 Writes a corrected local KDE accounts provider configuration for Google and restarts KDE account services.
