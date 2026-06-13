@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # fix_kde_google_integration.sh
 # Purpose: Repair KDE account integration for Google services by writing

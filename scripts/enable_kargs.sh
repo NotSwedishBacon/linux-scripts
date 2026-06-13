@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # enable_kargs.sh
 # Purpose: Write `/etc/modprobe.d/i915.conf` with recommended i915

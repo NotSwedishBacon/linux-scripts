@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # disable_raop.sh
 # Purpose: Disable RAOP (AirPlay) support in PipeWire by writing

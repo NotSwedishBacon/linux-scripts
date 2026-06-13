@@ -45,6 +45,25 @@ How to run:
 bash scripts/disable_raop.sh
 ```
 
+### `scripts/disable_nm_wait_online.sh`
+
+Disables and masks `NetworkManager-wait-online.service` to reduce boot
+time by preventing systemd from waiting for `network-online.target`.
+
+What it does:
+- Uses `systemctl` to disable and mask `NetworkManager-wait-online.service` (requires `sudo`)
+- No-op if the service is not present on the system
+
+How to run:
+
+```bash
+bash scripts/disable_nm_wait_online.sh
+```
+
+Notes:
+- This script requires `systemd`/`systemctl` and will prompt for sudo when necessary.
+- Masking the service prevents it from being started by other units; undo with `sudo systemctl unmask --now NetworkManager-wait-online.service`.
+
 ### `scripts/enable_kargs.sh`
 
 Writes a `i915` kernel module options file and updates the
