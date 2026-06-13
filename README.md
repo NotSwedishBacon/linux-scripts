@@ -1,14 +1,9 @@
 # NotSwedishBacon's linux scripts
 
-Useful Linux scripts for setting up Fedora Atomic or minimal desktop installations.
-
-Personal note: This repository reflects my personal setup and the small helper
-scripts I use on my own systems. Feel free to use or adapt any parts of it,
-but review the scripts and adjust paths or credentials before running.
+Simple helper scripts for Fedora Atomic desktop installs.
 
 ## Purpose
-
-This repository contains small helper scripts for installing user applications and fixing KDE account integration issues on Fedora-based systems.
+These scripts are my personal tools for local setup and fixes. Use or adapt them if you like, but review the files before running.
 
 ## Scripts
 
@@ -17,14 +12,14 @@ This repository contains small helper scripts for installing user applications a
 Installs Discord for the current user without requiring root access.
 
 What it does:
-- Creates a local Discord install directory under `$HOME/.local/share/discord`
+- Creates `$HOME/.local/share/discord`
 - Downloads the latest Discord tarball to `$HOME/Downloads/discord.tar.gz`
 - Extracts Discord into the local install directory
-- Sets up a local icon and desktop entry so Discord appears in app menus
+- Creates a local icon and desktop entry
 - Refreshes the local desktop database
-- Cleans up the downloaded tarball
+- Removes the downloaded tarball
 
-How to run:
+Run:
 
 ```bash
 bash scripts/installdiscord.sh
@@ -32,14 +27,14 @@ bash scripts/installdiscord.sh
 
 ### `scripts/disable_raop.sh`
 
-Disables RAOP (AirPlay) support in PipeWire by writing a local PipeWire override file.
+Disables RAOP (AirPlay) support in PipeWire. 
 
 What it does:
-- Creates `/etc/pipewire/pipewire.conf.d`
-- Writes `disable-raop.conf` to disable the RAOP module
-- Restarts the user PipeWire services `pipewire` and `pipewire-pulse`
+- Creates `/etc/pipewire/pipewire.conf.d` (requires `sudo`) or `~/.config/pipewire/pipewire.conf.d`
+- Writes `disable-raop.conf` to disable RAOP
+- Restarts `pipewire` and `pipewire-pulse`
 
-How to run:
+Run:
 
 ```bash
 bash scripts/disable_raop.sh
@@ -47,65 +42,61 @@ bash scripts/disable_raop.sh
 
 ### `scripts/disable_nm_wait_online.sh`
 
-Disables and masks `NetworkManager-wait-online.service` to reduce boot
-time by preventing systemd from waiting for `network-online.target`.
+Stops `NetworkManager-wait-online.service` from delaying boot. (requires `sudo`)
 
 What it does:
-- Uses `systemctl` to disable and mask `NetworkManager-wait-online.service` (requires `sudo`)
-- No-op if the service is not present on the system
+- Uses `systemctl` to disable and mask the service 
+- Does nothing if the service is not installed
 
-How to run:
+Run:
 
 ```bash
 bash scripts/disable_nm_wait_online.sh
 ```
 
 Notes:
-- This script requires `systemd`/`systemctl` and will prompt for sudo when necessary.
-- Masking the service prevents it from being started by other units; undo with `sudo systemctl unmask --now NetworkManager-wait-online.service`.
+- Undo with `sudo systemctl unmask --now NetworkManager-wait-online.service`.
 
 ### `scripts/enable_kargs.sh`
 
-Writes a `i915` kernel module options file and updates the
-initramfs on rpm-ostree systems so the file is included early in boot.
+Adds `i915` kernel options and updates initramfs on rpm-ostree systems. (requires `sudo`)
 
 What it does:
-- Backs up an existing `/etc/modprobe.d/i915.conf` to a timestamped backup
-- Writes the following lines to `/etc/modprobe.d/i915.conf`:
+- Backs up `/etc/modprobe.d/i915.conf` if it exists
+- Writes:
 
 ```
 options i915 enable_guc=2
 options i915 enable_fbc=1
 ```
+
 - Runs `sudo rpm-ostree initramfs --enable --arg=-I --arg=/etc/modprobe.d/i915.conf`
 
-How to run:
+Run:
 
 ```bash
 bash scripts/enable_kargs.sh
 ```
 
 Notes:
-- Intended for rpm-ostree systems (Fedora Silverblue, Kinoite, etc.).
-- Requires `sudo` and `rpm-ostree` to be available.
-- A reboot is required for the kernel options to take effect.
+- Reboot is required for the changes to take effect.
 
 ### `scripts/fix_kde_google_integration.sh`
 
-Writes a corrected local KDE accounts provider configuration for Google and restarts KDE account services.
+Fixes KDE Google account provider configuration.
 
 What it does:
-- Backs up an existing local provider file at `$HOME/.local/share/accounts/providers/google.provider`
-- Creates or updates the local override file with a working Google OAuth2 provider configuration
-- Restarts the KDE account management service so the new configuration is loaded
+- Backs up `$HOME/.local/share/accounts/providers/google.provider` if present
+- Writes a corrected Google OAuth2 provider override
+- Restarts KDE account services to load the new config
 
 Important:
-- This script requires a Google OAuth client ID and client secret generated from the Google Cloud Console.
-- Replace the placeholder values in the script before running:
+- You must provide your own Google OAuth client ID and secret.
+- Replace the placeholders in the script before running:
   - `ClientId=get-your-own.apps.googleusercontent.com`
   - `ClientSecret=my-secret`
 
-How to run:
+Run:
 
 ```bash
 bash scripts/fix_kde_google_integration.sh
@@ -115,14 +106,9 @@ bash scripts/fix_kde_google_integration.sh
 
 1. Go to the Google Cloud Console: https://console.cloud.google.com/
 2. Create or select a project.
-3. Open `APIs & Services` > `OAuth consent screen` and configure the consent screen for external or internal use.
-4. Open `APIs & Services` > `Credentials` and create an OAuth 2.0 Client ID.
-5. Choose `Desktop app` or `Web application` as the application type.
-6. Copy the generated `Client ID` and `Client Secret`.
-7. Update `scripts/fix_kde_google_integration.sh` with those values.
-
-## Notes
-
-- These scripts are intended for user-local installs and local configuration fixes.
-- Run them from the repository root or with the correct relative paths.
-- Review the script contents before execution, especially if you are modifying Google credentials or KDE config files.
+3. Configure the OAuth consent screen under `APIs & Services`.
+4. Create credentials in `APIs & Services` > `Credentials`.
+5. Choose `OAuth 2.0 Client ID`.
+6. Select `Desktop app` or `Web application`.
+7. Copy the `Client ID` and `Client Secret`.
+8. Add them to `scripts/fix_kde_google_integration.sh`.
