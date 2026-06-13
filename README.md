@@ -2,6 +2,10 @@
 
 Useful Linux scripts for setting up Fedora Atomic or minimal desktop installations.
 
+Personal note: This repository reflects my personal setup and the small helper
+scripts I use on my own systems. Feel free to use or adapt any parts of it,
+but review the scripts and adjust paths or credentials before running.
+
 ## Purpose
 
 This repository contains small helper scripts for installing user applications and fixing KDE account integration issues on Fedora-based systems.
@@ -40,6 +44,32 @@ How to run:
 ```bash
 bash scripts/disable_raop.sh
 ```
+
+### `scripts/enable_kargs.sh`
+
+Writes a `i915` kernel module options file and updates the
+initramfs on rpm-ostree systems so the file is included early in boot.
+
+What it does:
+- Backs up an existing `/etc/modprobe.d/i915.conf` to a timestamped backup
+- Writes the following lines to `/etc/modprobe.d/i915.conf`:
+
+```
+options i915 enable_guc=2
+options i915 enable_fbc=1
+```
+- Runs `sudo rpm-ostree initramfs --enable --arg=-I --arg=/etc/modprobe.d/i915.conf`
+
+How to run:
+
+```bash
+bash scripts/enable_kargs.sh
+```
+
+Notes:
+- Intended for rpm-ostree systems (Fedora Silverblue, Kinoite, etc.).
+- Requires `sudo` and `rpm-ostree` to be available.
+- A reboot is required for the kernel options to take effect.
 
 ### `scripts/fix_kde_google_integration.sh`
 
