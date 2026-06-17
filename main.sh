@@ -177,7 +177,6 @@ sudo rpm-ostree override remove \
              libavfilter-free \
              libavformat-free \
              libavutil-free \
-             libpostproc-free \
              libswresample-free \
              libswscale-free \
              ffmpeg-free \
