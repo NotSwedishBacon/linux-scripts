@@ -166,7 +166,7 @@ sudo rpm-ostree install -y \
         gstreamer1-vaapi \
         --allow-inactive
 
-sudo rpm-ostree override remove -y \
+sudo rpm-ostree override remove \
              fdk-aac-free \
              libavcodec-free \
              libavdevice-free \
@@ -179,7 +179,7 @@ sudo rpm-ostree override remove -y \
              ffmpeg-free \
         --install ffmpeg
 
-sudo rpm-ostree update -y --uninstall rpmfusion-free-release --uninstall rpmfusion-nonfree-release --install rpmfusion-free-release --install rpmfusion-nonfree-release
+sudo rpm-ostree update --uninstall rpmfusion-free-release --uninstall rpmfusion-nonfree-release --install rpmfusion-free-release --install rpmfusion-nonfree-release
 
 echo "RPM-Fusion is now installed"
 
