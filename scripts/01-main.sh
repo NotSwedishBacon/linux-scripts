@@ -168,7 +168,8 @@ echo "Installing additional applications and extensions..."
 VERSION=$(curl -s https://api.github.com/repos/travier/sysexts-manager/releases/latest \
   | jq -r '.body' \
   | grep -o 'sysexts-manager-.*-x86-64\.raw' \
-  | tail -n 1)
+  | tail -n 1 \
+  | sed -E 's/sysexts-manager-([0-9.]+)-.*/\1/')
 VERSION_ID="$(rpm -E %fedora)" # Fedora release
 ARCH="x86-64"   # or arm64
 URL="https://github.com/travier/sysexts-manager/releases/download/sysexts-manager/"
@@ -181,15 +182,15 @@ sudo restorecon -RFv "/var/lib/extensions"{,.d} "/run/extensions"
 sudo systemctl enable systemd-sysext.service
 sudo systemctl restart systemd-sysext.service
 
-sudo sysexts-manager add fastfetch https://extensions.fcos.fr/fedora
-sudo sysexts-manager add fish https://extensions.fcos.fr/fedora
-sudo sysexts-manager add vscode https://extensions.fcos.fr/community
+sudo sysexts-manager add fastfetch https://extensions.fcos.fr/fedora &&
+sudo sysexts-manager add fish https://extensions.fcos.fr/fedora &&
+sudo sysexts-manager add vscode https://extensions.fcos.fr/community &&
 
-sudo sysexts-manager update
+sudo sysexts-manager update &&
 
-sudo sysexts-manager enable fastfetch
-sudo sysexts-manager enable fish
-sudo sysexts-manager enable vscode
+sudo sysexts-manager enable fastfetch &&
+sudo sysexts-manager enable fish &&
+sudo sysexts-manager enable vscode &&
 
 sudo sysexts-manager refresh
 
