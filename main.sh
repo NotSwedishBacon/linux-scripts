@@ -148,16 +148,8 @@ rm -f "$HOME/Downloads/discord.tar.gz"
 echo "Discord installation complete."
 
 # Enable VS Code repo
-echo "Installing VS Code"
+echo "Installing VS Code Repo"
 echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-sudo rpm-ostree install -Ay code
-xdg-mime default code.desktop text/plain
-if [ $? -eq 0 ];
-   then
-      echo "[✓] SUCCESS"
-   else
-      echo "[✗] FAIL"
-fi
 
 # Enable RPM-Fusion and install packages
 echo "Enabling RPM-Fusion"
@@ -166,6 +158,7 @@ sudo rpm-ostree install -Ay https://mirrors.rpmfusion.org/free/fedora/rpmfusion-
 sudo rpm-ostree install -y \
         intel-media-driver \
         fastfetch \
+        code \
         gstreamer1-plugin-libav \
         gstreamer1-plugins-bad-free-extras \
         gstreamer1-plugins-bad-freeworld \
