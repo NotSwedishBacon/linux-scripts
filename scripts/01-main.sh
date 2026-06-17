@@ -210,6 +210,12 @@ EOF
 echo "Updating initramfs to include /etc/modprobe.d/i915.conf via rpm-ostree..."
 sudo rpm-ostree initramfs --enable --arg=-I --arg=/etc/modprobe.d/i915.conf
 
+# Enable auto updates
+echo "Enabling auto updates"
+sudo sed -i 's/^#\?AutomaticUpdatePolicy=.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf
+sudo rpm-ostree reload
+sudo systemctl enable --now rpm-ostreed-automatic.timer
+
 echo "Time for a reboot!" 
 
 # Keep terminal open after completion
