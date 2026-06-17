@@ -70,7 +70,17 @@ fi
 
 # Disable Fedora repository:
 echo "Disabling Fedora repository"
-sudo flatpak remote-modify --disable fedora
+sudo flatpak remote-delete fedora
+if [ $? -eq 0 ];
+   then
+      echo "[✓] SUCCESS"
+   else
+      echo "[✗] FAIL"
+fi
+
+# Disable Fedora repository:
+echo "Disabling Fedora-testing repository"
+sudo flatpak remote-delete fedora-testing
 if [ $? -eq 0 ];
    then
       echo "[✓] SUCCESS"
