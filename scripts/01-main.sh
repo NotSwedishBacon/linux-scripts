@@ -162,6 +162,7 @@ rm -f "$HOME/Downloads/discord.tar.gz"
 
 echo "Discord installation complete."
 
+echo "Installing additional applications and extensions..."
 # Install Sysexts Manager for easier management of system extensions
 # get the latest version number from github
 VERSION=$(curl -s https://api.github.com/repos/travier/sysexts-manager/releases/latest \
