@@ -99,7 +99,6 @@ flatpak install flathub -y org.kde.skanpage &&
 flatpak install flathub -y org.kde.kate &&
 flatpak install flathub -y org.kde.ark &&
 flatpak install flathub -y org.kde.krita &&
-flatpak install flathub -y org.kde.kontact &&
 # non KDE apps
 flatpak install flathub -y com.github.tchx84.Flatseal &&
 flatpak install flathub -y org.libreoffice.LibreOffice &&
@@ -108,6 +107,7 @@ flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.mozilla.firefox &&
+flatpak install flathub -y org.mozilla.thunderbird &&
 flatpak install flathub -y com.spotify.Client
 
 # Disable built-in firefox
