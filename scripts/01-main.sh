@@ -12,81 +12,35 @@ context.properties = {
     module.raop = false
 }
 EOF
-if [ $? -eq 0 ];
-   then
-      echo "[✓] SUCCESS"
-   else
-      echo "[✗] FAIL"
-fi
 
 # Restart PipeWire so it takes effect
 echo "Restarting PipeWire services..."
-if systemctl --user restart pipewire pipewire-pulse; then
-  echo "[✓] SUCCESS"
-else
-  echo "[✗] FAIL"
-fi
+systemctl --user restart pipewire pipewire-pulse
 
 # Disable network wait service for faster boot times
 echo "Disabling and masking NetworkManager-wait-online.service"
 sudo systemctl disable "NetworkManager-wait-online.service"
 sudo systemctl mask "NetworkManager-wait-online.service"
-if [ $? -eq 0 ];
-   then
-      echo "[✓] SUCCESS"
-   else
-      echo "[✗] FAIL"
-fi
 
 # Add Flathub repository:
 echo "Adding Flathub repository"
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-if [ $? -eq 0 ];
-   then
-      echo "[✓] SUCCESS"
-   else
-      echo "[✗] FAIL"
-fi
 
 # Enable Flathub repository:
 echo "Enabling Flathub repository"
 sudo flatpak remote-modify --enable flathub
-if [ $? -eq 0 ];
-   then
-      echo "[✓] SUCCESS"
-   else
-      echo "[✗] FAIL"
-fi
 
 # Remove all applications and runtimes:
 echo "Removing all apps and runtimes"
 sudo flatpak uninstall --all -y
-if [ $? -eq 0 ];
-   then
-      echo "[✓] SUCCESS"
-   else
-      echo "[✗] FAIL"
-fi
 
 # Disable Fedora repository:
 echo "Disabling Fedora repository"
 sudo flatpak remote-delete fedora
-if [ $? -eq 0 ];
-   then
-      echo "[✓] SUCCESS"
-   else
-      echo "[✗] FAIL"
-fi
 
 # Disable Fedora repository:
 echo "Disabling Fedora-testing repository"
 sudo flatpak remote-delete fedora-testing
-if [ $? -eq 0 ];
-   then
-      echo "[✓] SUCCESS"
-   else
-      echo "[✗] FAIL"
-fi
 
 # Install back Fedora default applications from Flathub (minus games & remote desktop):
 echo "Installing back apps from Flathub"
@@ -117,26 +71,22 @@ sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.
 sudo update-desktop-database /usr/local/share/applications/
 
 # Install official Discord client 
-echo "Starting Discord installation..."
+echo "Installing Discord from official tarball"
 
 # Create the target install directory for the Discord application files.
-echo "Creating Discord install directory..."
 sudo mkdir -p "/var/opt/discord"
 
 # Create directories for the desktop entry.
 sudo mkdir -p "/usr/local/share/applications"
 
 # Download the Discord tarball into the Downloads folder.
-echo "Downloading Discord tarball..."
 curl -L -o "$HOME/Downloads/discord.tar.gz" "https://discord.com/api/download?platform=linux&format=tar.gz"
 
 # Extract the downloaded Discord tarball into the install directory.
 # The --strip-components=1 flag removes the top-level directory from the archive.
-echo "Extracting Discord files..."
 sudo tar -xvf "$HOME/Downloads/discord.tar.gz" -C "/var/opt/discord/" --strip-components=1
 
 # Create a desktop entry so Discord appears in application menus.
-echo "Creating Discord desktop entry..."
 sudo tee "/usr/local/share/applications/discord.desktop" > /dev/null <<'EOF'
 [Desktop Entry]
 Name=Discord
@@ -157,10 +107,7 @@ sudo chmod +x "/usr/local/share/applications/discord.desktop"
 update-desktop-database "/usr/local/share/applications"
 
 # Remove the downloaded tarball from Downloads when done.
-echo "Cleaning up downloaded files..."
 rm -f "$HOME/Downloads/discord.tar.gz"
-
-echo "Discord installation complete."
 
 echo "Installing additional applications and extensions..."
 # Install Sysexts Manager for easier management of system extensions
@@ -263,7 +210,3 @@ sudo rpm-ostree reload
 sudo systemctl enable --now rpm-ostreed-automatic.timer
 
 echo "Time for a reboot!" 
-
-# Keep terminal open after completion
-echo "✂✂✂   Script ended   ✂✂✂"
-read
