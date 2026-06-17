@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Enable TMP2 unlocking
+echo "Enable auto unlock" 
+sudo systemd-cryptenroll --tpm2-device=auto /dev/nvme0n1p3
+
 # Disable RAOP (Airplay)
 echo "Disabling Airplay"
 sudo mkdir -p /etc/pipewire/pipewire.conf.d
