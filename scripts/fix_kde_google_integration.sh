@@ -51,7 +51,7 @@ sudo tee "$PROVIDER_FILE" >/dev/null <<EOL
             'https://www.googleapis.com/auth/drive'
           ]</setting>
           <setting type="as" name="AllowedSchemes">['https']</setting>
-          <setting name="ClientId">get-your-own.apps.googleusercontent.com</setting>
+          <setting name="ClientId">419352187565-l1jspl42ch357ubau5ojg076jp22m4v0.apps.googleusercontent.com</setting>
           <setting name="ClientSecret">my-secret</setting>
           <setting type="b" name="ForceClientAuthViaRequestBody">true</setting>
         </group>
