@@ -107,7 +107,8 @@ flatpak install flathub -y io.missioncenter.MissionCenter &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
-flatpak install flathub -y org.mozilla.firefox
+flatpak install flathub -y org.mozilla.firefox &&
+flatpak install flathub -y com.spotify.Client
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
