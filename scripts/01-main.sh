@@ -194,27 +194,6 @@ sudo sysexts-manager enable vscode &&
 
 sudo sysexts-manager refresh
 
-# Create systemd service for auto updating sysexts
-echo "Creating systemd service for auto updating sysexts"
-sudo tee "/etc/systemd/system/sysexts-update.service" > /dev/null << EOF
-[Unit]
-Description=Auto-update system extensions using sysexts-manager
-After=network-online.target
-Wants=network-online.target
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/sysexts-manager update
-ExecStart=/usr/bin/sysexts-manager refresh
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-sudo systemctl daemon-reload
-sudo systemctl enable --now sysexts-update.service
-
 # Enable RPM-Fusion and install packages
 echo "Enabling RPM-Fusion"
 sudo rpm-ostree install -Ay https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
