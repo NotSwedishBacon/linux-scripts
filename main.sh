@@ -163,6 +163,8 @@ sudo rpm-ostree install -y \
         intel-media-driver \
         fastfetch \
         code \
+        glibc-langpack-sv \
+        langpacks-sv \
         gstreamer1-plugin-libav \
         gstreamer1-plugins-bad-free-extras \
         gstreamer1-plugins-bad-freeworld \
