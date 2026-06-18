@@ -1,24 +1,18 @@
 #!/bin/bash
 
 # Enable TMP2 unlocking
-echo "Enable auto unlock" 
 ujust toggle-tpm2
 
 # Disable RAOP (Airplay)
-echo "Disabling Airplay"
 sudo mkdir -p /etc/pipewire/pipewire.conf.d
 sudo tee "/etc/pipewire/pipewire.conf.d/disable-raop.conf" > /dev/null <<'EOF'
 context.properties = {
     module.raop = false
 }
 EOF
-
-# Restart PipeWire so it takes effect
-echo "Restarting PipeWire services..."
 systemctl --user restart pipewire pipewire-pulse;
 
 # Install my flathub apps
-echo "Installing apps from Flathub"
 # KDE apps
 flatpak install flathub -y org.kde.krita &&
 # non KDE apps
@@ -29,7 +23,6 @@ flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y com.spotify.Client
 
 # Install official Discord client 
-echo "Starting Discord installation..."
 sudo mkdir -p "/var/opt/discord"
 sudo mkdir -p "/usr/local/share/applications"
 sudo mkdir -p "/usr/local/share/icons/hicolor/256x256/apps"
@@ -56,13 +49,10 @@ ujust aurora-cli
 ujust devmode
 
 # Enable kargs (last to minimise initramfs gens)
-echo "Enabling GuC/HuC"
 sudo tee "/etc/modprobe.d/i915.conf" > /dev/null <<'EOF'
 options i915 enable_guc=2
 options i915 enable_fbc=1
 EOF
-
-echo "Updating initramfs to include /etc/modprobe.d/i915.conf via rpm-ostree..."
 sudo rpm-ostree initramfs --enable --arg=-I --arg=/etc/modprobe.d/i915.conf
 
 echo "Time to reboot for all changes to take effect!"
