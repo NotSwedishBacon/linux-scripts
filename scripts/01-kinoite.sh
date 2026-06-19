@@ -27,6 +27,7 @@ flatpak install flathub -y org.kde.kcalc &&
 flatpak install flathub -y org.kde.okular &&
 flatpak install flathub -y org.kde.skanpage &&
 flatpak install flathub -y org.kde.krita &&
+flatpak install flathub -y org.kde.kate &&
 # non KDE apps
 flatpak install flathub -y org.libreoffice.LibreOffice &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
