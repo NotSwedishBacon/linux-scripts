@@ -58,7 +58,8 @@ flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.gimp.GIMP &&
 flatpak install flathub -y org.inkscape.Inkscape &&
-flatpak install flathub -y org.mozilla.firefox 
+flatpak install flathub -y org.mozilla.firefox &&
+flatpak install flathub -y org.mozilla.Thunderbird 
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications

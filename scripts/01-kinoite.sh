@@ -28,12 +28,14 @@ flatpak install flathub -y org.kde.okular &&
 flatpak install flathub -y org.kde.skanpage &&
 flatpak install flathub -y org.kde.krita &&
 flatpak install flathub -y org.kde.kate &&
+flatpak install flathub -y org.kde.haruna &&
 # non KDE apps
 flatpak install flathub -y org.libreoffice.LibreOffice &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
-flatpak install flathub -y org.mozilla.firefox 
+flatpak install flathub -y org.mozilla.firefox &&
+flatpak install flathub -y org.mozilla.Thunderbird 
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
