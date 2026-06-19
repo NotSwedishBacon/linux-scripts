@@ -57,7 +57,8 @@ flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.gimp.GIMP &&
-flatpak install flathub -y org.inkscape.Inkscape
+flatpak install flathub -y org.inkscape.Inkscape &&
+flatpak install flathub -y org.mozilla.firefox 
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -93,7 +94,7 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 
 # Enable RPM-Fusion and install packages
 sudo rpm-ostree install -Ay https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
+sudo rpm-ostree apply-live --allow-replacement
 sudo rpm-ostree install -y \
         intel-media-driver \
         fastfetch \
@@ -109,6 +110,8 @@ sudo rpm-ostree install -y \
         --allow-inactive
 
 sudo rpm-ostree override remove \
+             yelp \
+             gnome-tour \
              fdk-aac-free \
              libavcodec-free \
              libavdevice-free \
