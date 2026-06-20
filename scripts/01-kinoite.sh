@@ -91,6 +91,11 @@ sudo sysexts-manager enable fastfetch &&
 sudo sysexts-manager enable vscode &&
 sudo sysexts-manager refresh
 
+# Add update command alias to .bashrc
+if ! grep -qxF "alias updext='sudo sysexts-manager update && sudo sysexts-manager refresh'" "$HOME/.bashrc"; then
+    printf "%s\n" "alias updext='sudo sysexts-manager update && sudo sysexts-manager refresh'" >> "$HOME/.bashrc"
+fi
+
 # Enable auto updates
 sudo sed -i 's/^#\?AutomaticUpdatePolicy=.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf
 sudo rpm-ostree reload
