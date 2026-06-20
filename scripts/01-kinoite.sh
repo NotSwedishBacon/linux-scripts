@@ -66,38 +66,30 @@ chmod +x "$HOME/.local/share/applications/discord.desktop"
 update-desktop-database "$HOME/.local/share/applications"
 rm -f "$HOME/Downloads/discord.tar.gz"
 
-# Enable VS Code repo
-echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-
-# Enable RPM-Fusion and install packages
-sudo rpm-ostree install -Ay https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo rpm-ostree apply-live --allow-replacement
-sudo rpm-ostree install -y \
-        intel-media-driver \
-        fastfetch \
-        code \
-        glibc-langpack-sv \
-        langpacks-sv \
-        gstreamer1-plugin-libav \
-        gstreamer1-plugins-bad-free-extras \
-        gstreamer1-plugins-bad-freeworld \
-        gstreamer1-plugins-ugly \
-        gstreamer1-vaapi \
-        --allow-inactive
-
-sudo rpm-ostree override remove \
-             fdk-aac-free \
-             libavcodec-free \
-             libavdevice-free \
-             libavfilter-free \
-             libavformat-free \
-             libavutil-free \
-             libswresample-free \
-             libswscale-free \
-             ffmpeg-free \
-        --install ffmpeg
-
-sudo rpm-ostree update --uninstall rpmfusion-free-release --uninstall rpmfusion-nonfree-release --install rpmfusion-free-release --install rpmfusion-nonfree-release
+# Install Sysexts Manager for easier management of system extensions
+# get the latest version number from github
+VERSION=$(curl -s https://api.github.com/repos/travier/sysexts-manager/releases/latest \
+  | jq -r '.body' \
+  | grep -o 'sysexts-manager-.*-x86-64\.raw' \
+  | tail -n 1 \
+  | sed -E 's/sysexts-manager-([0-9.]+)-.*/\1/')
+VERSION_ID="$(rpm -E %fedora)" # Fedora release
+ARCH="x86-64"   # or arm64
+URL="https://github.com/travier/sysexts-manager/releases/download/sysexts-manager/"
+NAME="sysexts-manager-${VERSION}-${VERSION_ID}-${ARCH}.raw"
+sudo install -d -m 0755 -o 0 -g 0 "/var/lib/extensions"{,.d} "/run/extensions"
+curl --silent --fail --location "${URL}/${NAME}" \
+    | sudo bash -c "cat > /var/lib/extensions.d/${NAME}"
+sudo ln -snf "/var/lib/extensions.d/${NAME}" "/var/lib/extensions/sysexts-manager.raw"
+sudo restorecon -RFv "/var/lib/extensions"{,.d} "/run/extensions"
+sudo systemctl enable systemd-sysext.service
+sudo systemctl restart systemd-sysext.service
+sudo sysexts-manager add fastfetch https://extensions.fcos.fr/fedora &&
+sudo sysexts-manager add vscode https://extensions.fcos.fr/community &&
+sudo sysexts-manager update &&
+sudo sysexts-manager enable fastfetch &&
+sudo sysexts-manager enable vscode &&
+sudo sysexts-manager refresh
 
 # Enable auto updates
 sudo sed -i 's/^#\?AutomaticUpdatePolicy=.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf
