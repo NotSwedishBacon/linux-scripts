@@ -16,7 +16,6 @@ systemctl --user restart pipewire pipewire-pulse;
 # KDE apps
 flatpak install flathub -y org.kde.krita &&
 # non KDE apps
-flatpak install flathub -y org.libreoffice.LibreOffice &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
@@ -48,12 +47,5 @@ rm -f "$HOME/Downloads/discord.tar.gz"
 # Enable devmode and aurora-cli
 ujust aurora-cli
 ujust devmode
-
-# Enable kargs (last to minimise initramfs gens)
-sudo tee "/etc/modprobe.d/i915.conf" > /dev/null <<'EOF'
-options i915 enable_guc=2
-options i915 enable_fbc=1
-EOF
-sudo rpm-ostree initramfs --enable --arg=-I --arg=/etc/modprobe.d/i915.conf
 
 echo "Time to reboot for all changes to take effect!"
