@@ -21,7 +21,6 @@ sudo flatpak remote-delete fedora-testing
 
 # Install my flathub apps
 # KDE apps
-flatpak install flathub -y org.kde.elisa &&
 flatpak install flathub -y org.kde.gwenview &&
 flatpak install flathub -y org.kde.kcalc &&
 flatpak install flathub -y org.kde.okular &&
@@ -32,7 +31,8 @@ flatpak install flathub -y org.libreoffice.LibreOffice &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
-flatpak install flathub -y org.mozilla.firefox 
+flatpak install flathub -y org.mozilla.firefox &&
+flatpak install flathub -y org.mozilla.thunderbird
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -68,7 +68,6 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 
 # Enable RPM-Fusion and install packages
 sudo rpm-ostree install -Ay https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo rpm-ostree apply-live --allow-replacement
 sudo rpm-ostree install -y \
         intel-media-driver \
         fastfetch \
@@ -95,17 +94,5 @@ sudo rpm-ostree override remove \
         --install ffmpeg
 
 sudo rpm-ostree update --uninstall rpmfusion-free-release --uninstall rpmfusion-nonfree-release --install rpmfusion-free-release --install rpmfusion-nonfree-release
-
-# Enable auto updates
-sudo sed -i 's/^#\?AutomaticUpdatePolicy=.*/AutomaticUpdatePolicy=stage/' /etc/rpm-ostreed.conf
-sudo rpm-ostree reload
-sudo systemctl enable --now rpm-ostreed-automatic.timer
-
-# Enable kargs (last to minimise initramfs gens)
-sudo tee "/etc/modprobe.d/i915.conf" > /dev/null <<'EOF'
-options i915 enable_guc=2
-options i915 enable_fbc=1
-EOF
-sudo rpm-ostree initramfs --enable --arg=-I --arg=/etc/modprobe.d/i915.conf
 
 echo "Time to reboot for all changes to take effect!"
