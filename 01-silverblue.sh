@@ -81,6 +81,7 @@ sudo rpm-ostree install -y \
 	code \
 	gnome-shell-extension-appindicator \ 
 	gnome-shell-extension-dash-to-dock \
+	gnome-shell-extension-caffeine \
 	glibc-langpack-sv \
 	langpacks-sv
 
