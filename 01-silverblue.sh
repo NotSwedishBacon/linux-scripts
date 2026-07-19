@@ -24,32 +24,24 @@ sudo flatpak remote-delete fedora-testing
 
 # Install my flathub apps
 # Gnome apps
-flatpak install flathub -y org.gnome.baobab &&
 flatpak install flathub -y org.gnome.Calculator &&
 flatpak install flathub -y org.gnome.Calendar &&
-flatpak install flathub -y org.gnome.Characters &&
-flatpak install flathub -y org.gnome.Snapshot &&
-flatpak install flathub -y org.gnome.clocks &&
-flatpak install flathub -y org.gnome.Connections &&
-flatpak install flathub -y org.gnome.Contacts &&
 flatpak install flathub -y org.gnome.Extensions &&
-flatpak install flathub -y org.gnome.font-viewer &&
 flatpak install flathub -y org.gnome.TextEditor &&
 flatpak install flathub -y org.gnome.Loupe &&
 flatpak install flathub -y org.gnome.Logs &&
-flatpak install flathub -y org.gnome.Maps &&
 flatpak install flathub -y org.gnome.NautilusPreviewer &&
 flatpak install flathub -y org.gnome.Papers &&
 flatpak install flathub -y org.gnome.Weather &&
-# non KDE apps
-flatpak install flathub -y org.libreoffice.LibreOffice &&
+# non gnome apps
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.gimp.GIMP &&
 flatpak install flathub -y org.inkscape.Inkscape &&
 flatpak install flathub -y org.mozilla.firefox &&
-flatpak install flathub -y org.mozilla.thunderbird 
+flatpak install flathub -y org.mozilla.thunderbird &&
+flatpak install flathub -y com.calibre_ebook.calibre
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -86,11 +78,11 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 # Enable RPM-Fusion and install packages
 sudo rpm-ostree install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo rpm-ostree install -y \
-        code \
-        gnome-shell-extension-appindicator \ 
-        gnome-shell-extension-dash-to-dock \
-        glibc-langpack-sv \
-        langpacks-sv
+	code \
+	gnome-shell-extension-appindicator \ 
+	gnome-shell-extension-dash-to-dock \
+	glibc-langpack-sv \
+	langpacks-sv
 
 sudo rpm-ostree override remove \
              yelp \
