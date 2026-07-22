@@ -19,7 +19,8 @@ flatpak install flathub -y org.kde.krita &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
-flatpak install flathub -y com.spotify.Client
+flatpak install flathub -y com.spotify.Client &&
+flatpak install flathub -y com.calibre_ebook.calibre
 
 # Install official Discord client 
 mkdir -p "$HOME/.local/share/discord"
