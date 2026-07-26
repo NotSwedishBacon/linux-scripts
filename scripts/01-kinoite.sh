@@ -68,36 +68,4 @@ rm -f "$HOME/Downloads/discord.tar.gz"
 # add support to export toolbox apps with one command
 curl https://raw.githubusercontent.com/mrvladus/toolbox-export/main/toolbox-export.py --create-dirs -o ~/.local/bin/toolbox-export && chmod +x ~/.local/bin/toolbox-export
 
-
-# Enable VS Code repo
-echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-
-# Enable RPM-Fusion and install packages
-sudo rpm-ostree install -Ay https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo rpm-ostree install -y \
-        intel-media-driver \
-        code \
-        glibc-langpack-sv \
-        langpacks-sv \
-        gstreamer1-plugin-libav \
-        gstreamer1-plugins-bad-free-extras \
-        gstreamer1-plugins-bad-freeworld \
-        gstreamer1-plugins-ugly \
-        gstreamer1-vaapi \
-        --allow-inactive
-
-sudo rpm-ostree override remove \
-             fdk-aac-free \
-             libavcodec-free \
-             libavdevice-free \
-             libavfilter-free \
-             libavformat-free \
-             libavutil-free \
-             libswresample-free \
-             libswscale-free \
-             ffmpeg-free \
-        --install ffmpeg
-
-sudo rpm-ostree update --uninstall rpmfusion-free-release --uninstall rpmfusion-nonfree-release --install rpmfusion-free-release --install rpmfusion-nonfree-release
-
 echo "Time to reboot for all changes to take effect!"
