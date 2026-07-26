@@ -33,8 +33,7 @@ flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.mozilla.firefox &&
 flatpak install flathub -y org.mozilla.thunderbird &&
-flatpak install flathub -y com.spotify.Client &&
-flatpak install flathub -y com.calibre_ebook.calibre
+flatpak install flathub -y com.spotify.Client 
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
