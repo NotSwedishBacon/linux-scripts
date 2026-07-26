@@ -32,7 +32,9 @@ flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.mozilla.firefox &&
-flatpak install flathub -y org.mozilla.thunderbird
+flatpak install flathub -y org.mozilla.thunderbird &&
+flatpak install flathub -y com.spotify.Client &&
+flatpak install flathub -y com.calibre_ebook.calibre
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -63,6 +65,10 @@ chmod +x "$HOME/.local/share/applications/discord.desktop"
 update-desktop-database "$HOME/.local/share/applications"
 rm -f "$HOME/Downloads/discord.tar.gz"
 
+# add support to export toolbox apps with one command
+curl https://raw.githubusercontent.com/mrvladus/toolbox-export/main/toolbox-export.py --create-dirs -o ~/.local/bin/toolbox-export && chmod +x ~/.local/bin/toolbox-export
+
+
 # Enable VS Code repo
 echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
 
@@ -70,7 +76,6 @@ echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com
 sudo rpm-ostree install -Ay https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo rpm-ostree install -y \
         intel-media-driver \
-        fastfetch \
         code \
         glibc-langpack-sv \
         langpacks-sv \
