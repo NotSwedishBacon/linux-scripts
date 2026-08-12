@@ -48,20 +48,38 @@ sudo cp /usr/share/applications/org.mozilla.firefox.desktop /usr/local/share/app
 sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.firefox.desktop
 sudo update-desktop-database /usr/local/share/applications/
 
+# Install official Discord client 
+mkdir -p "$HOME/.local/share/discord"
+mkdir -p "$HOME/.local/share/icons/hicolor/256x256/apps"
+mkdir -p "$HOME/.local/share/applications"
+curl -L -o "$HOME/Downloads/discord.tar.gz" "https://discord.com/api/download?platform=linux&format=tar.gz"
+tar -xvf "$HOME/Downloads/discord.tar.gz" -C "$HOME/.local/share/discord/" --strip-components=1
+ln -sf "$HOME/.local/share/discord/discord.png" "$HOME/.local/share/icons/hicolor/256x256/apps/discord.png"
+cat << EOF > "$HOME/.local/share/applications/discord.desktop"
+[Desktop Entry]
+Name=Discord
+StartupWMClass=discord
+Comment=All-in-one voice and text chat for gamers that's free, secure, and works on both your desktop and phone.
+GenericName=Internet Messenger
+Exec=$HOME/.local/share/discord/discord
+Icon=discord
+Type=Application
+Categories=Network;InstantMessaging;
+Path=$HOME/.local/share/discord
+EOF
+chmod +x "$HOME/.local/share/applications/discord.desktop"
+update-desktop-database "$HOME/.local/share/applications"
+rm -f "$HOME/Downloads/discord.tar.gz"
+
 # Setup custom toolbox container 
-podman build --squash -t localhost/apps-toolbox:latest ../toolbox/Containerfile
+podman build --squash -t localhost/apps-toolbox:latest ../toolbox
 toolbox create -i localhost/apps-toolbox:latest apps-toolbox
 
 # Setup toolbox-export script
-curl https://raw.githubusercontent.com/NotSwedishBacon/linux-scripts/main/scripts/toolbox-export.py --create-dirs -o ~/.local/bin/toolbox-export && chmod +x ~/.local/bin/toolbox-export
-
-# Ensure local directories exist
-mkdir -p "$HOME/.local/share/applications"
-mkdir -p "$HOME/.local/share/icons"
+curl https://raw.githubusercontent.com/mrvladus/toolbox-export/main/toolbox-export.py --create-dirs -o ~/.local/bin/toolbox-export && chmod +x ~/.local/bin/toolbox-export
 
 # Enter toolbox and install apps
 toolbox run -c apps-toolbox toolbox-export code
-toolbox run -c apps-toolbox toolbox-export discord
 toolbox run -c apps-toolbox toolbox-export Z-Library
 
 echo "All done!"

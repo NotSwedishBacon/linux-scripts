@@ -7,16 +7,13 @@ RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc && \
 
 # Download Discord and Z-Library RPMs
 ARG ZLIB_URL="https://dln1.ncdn.ec/general-files/soft/desktop/Z-Library-3.2.0.x86_64.rpm"
-ARG DISCORD_URL="https://discord.com/api/download?platform=linux&format=rpm"
 
-RUN curl -L -o /tmp/discord.rpm "${DISCORD_URL}" && \
-    curl -L -o /tmp/zlibrary.rpm "${ZLIB_URL}" || true
+RUN curl -L -o /tmp/zlibrary.rpm "${ZLIB_URL}" || true
 
 # Install applications and cleanup
 RUN dnf -y update && \
     dnf -y install \
     code \
-    /tmp/discord.rpm \
     /tmp/zlibrary.rpm && \
     dnf clean all && \
     rm -rf /tmp/*.rpm
