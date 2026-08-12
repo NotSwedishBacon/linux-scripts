@@ -4,24 +4,23 @@ These scripts are intended for my personal use and should be reviewed carefully 
 
 ## Repository Contents
 
-- `scripts/01-kinoite.sh`
-- `scripts/02-kde-gdrive.sh`
-- `scripts/03-wonderbrushed.sh`
+- `scripts/01-setup.sh`
 - `scripts/99-clean-vscode.sh`
+- `scripts/toolbox-export.py`
+- `toolbox/Containerfile`
 
 ## Scripts
 
-### `scripts/01-kinoite.sh`
+### `scripts/01-setup.sh`
 
-My post install script to customize Kinoite after a fresh install.
-
-### `scripts/02-kde-gdrive.sh`
-
-Fixes KDE Google account integration by installing a local `google.provider` override.
-
-Important notes:
-- Update `ClientId` and `ClientSecret` in the script before use.
+A post-install setup script to configure a fresh Linux environment.
 
 ### `scripts/99-clean-vscode.sh`
 
 Cleans up Visual Studio Code user state and extensions directories if something gets corrupted.
+
+## Toolbox
+
+### `toolbox/Containerfile`
+
+Containerfile used to build a development toolbox image.
