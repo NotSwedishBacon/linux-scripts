@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Gnome minimise and maximise buttons
-gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
-
 # Enable TMP2 unlocking
 sudo systemd-cryptenroll --tpm2-device=auto /dev/nvme0n1p3
 
@@ -23,22 +20,17 @@ sudo flatpak remote-delete fedora
 sudo flatpak remote-delete fedora-testing
 
 # Install my flathub apps
-# Gnome apps
-flatpak install flathub -y org.gnome.Calculator &&
-flatpak install flathub -y org.gnome.Calendar &&
-flatpak install flathub -y org.gnome.Extensions &&
-flatpak install flathub -y org.gnome.TextEditor &&
-flatpak install flathub -y org.gnome.Loupe &&
-flatpak install flathub -y org.gnome.Logs &&
-flatpak install flathub -y org.gnome.NautilusPreviewer &&
-flatpak install flathub -y org.gnome.Papers &&
-flatpak install flathub -y org.gnome.Weather &&
-# non gnome apps
+# KDE apps
+flatpak install flathub -y org.kde.gwenview &&
+flatpak install flathub -y org.kde.kcalc &&
+flatpak install flathub -y org.kde.okular &&
+flatpak install flathub -y org.kde.skanpage &&
+flatpak install flathub -y org.kde.krita &&
+
+# non KDE apps
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
-flatpak install flathub -y org.gimp.GIMP &&
-flatpak install flathub -y org.inkscape.Inkscape &&
 flatpak install flathub -y org.mozilla.firefox &&
 flatpak install flathub -y org.mozilla.thunderbird 
 
@@ -78,8 +70,17 @@ toolbox create -i localhost/apps-toolbox:latest apps-toolbox
 # Setup toolbox-export script
 curl https://raw.githubusercontent.com/mrvladus/toolbox-export/main/toolbox-export.py --create-dirs -o ~/.local/bin/toolbox-export && chmod +x ~/.local/bin/toolbox-export
 
+toolbox run -c apps-toolbox cat << EOF | sudo tee /usr/local/bin/xdg-open
+#!/bin/sh
+exec flatpak-spawn --host -- xdg-open \$@
+EOF
+toolbox run -c apps-toolbox sudo chmod +x /usr/local/bin/xdg-open
+
+toolbox run -c apps-toolbox cp /usr/share/applications/code.desktop /usr/share/applications/code-url-handler.desktop ~/.local/share/applications/
+TOOLBOX_NAME=$(cat /run/.containerenv | grep 'name=' | sed -e 's/^name="\(.*\)"$/\1/')
+toolbox run -c apps-toolbox sed -i "s/Exec=\/usr\/share\/code\/code/Exec=\/usr\/bin\/toolbox run -c \"$TOOLBOX_NAME\" code/g" ~/.local/share/applications/code.desktop ~/.local/share/applications/code-url-handler.desktop
+
 # Enter toolbox and install apps
-toolbox run -c apps-toolbox toolbox-export code
 toolbox run -c apps-toolbox toolbox-export Z-Library
 
 echo "All done!"
