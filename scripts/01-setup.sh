@@ -26,6 +26,7 @@ flatpak install flathub -y org.kde.kcalc &&
 flatpak install flathub -y org.kde.okular &&
 flatpak install flathub -y org.kde.skanpage &&
 flatpak install flathub -y org.kde.krita &&
+flatpak install flathub -y org.kde.kate &&
 
 # non KDE apps
 flatpak install flathub -y io.github.shiftey.Desktop &&
@@ -70,17 +71,9 @@ toolbox create -i localhost/apps-toolbox:latest apps-toolbox
 # Setup toolbox-export script
 curl https://raw.githubusercontent.com/mrvladus/toolbox-export/main/toolbox-export.py --create-dirs -o ~/.local/bin/toolbox-export && chmod +x ~/.local/bin/toolbox-export
 
-toolbox run -c apps-toolbox cat << EOF | sudo tee /usr/local/bin/xdg-open
-#!/bin/sh
-exec flatpak-spawn --host -- xdg-open \$@
-EOF
-toolbox run -c apps-toolbox sudo chmod +x /usr/local/bin/xdg-open
-
-toolbox run -c apps-toolbox cp /usr/share/applications/code.desktop /usr/share/applications/code-url-handler.desktop ~/.local/share/applications/
-TOOLBOX_NAME=$(cat /run/.containerenv | grep 'name=' | sed -e 's/^name="\(.*\)"$/\1/')
-toolbox run -c apps-toolbox sed -i "s/Exec=\/usr\/share\/code\/code/Exec=\/usr\/bin\/toolbox run -c \"$TOOLBOX_NAME\" code/g" ~/.local/share/applications/code.desktop ~/.local/share/applications/code-url-handler.desktop
-
 # Enter toolbox and install apps
 toolbox run -c apps-toolbox toolbox-export Z-Library
+toolbox run -c apps-toolbox toolbox-export code
+toolbox run -c apps-toolbox ./02-toolbox.sh
 
 echo "All done!"
