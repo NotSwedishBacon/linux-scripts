@@ -47,15 +47,15 @@ mkdir -p ~/.config/autostart
 ln -s "$(flatpak info -l com.discordapp.Discord//stable | sed 's#/app/.*#/exports/share/applications/com.discordapp.Discord.desktop#')" ~/.config/autostart
 
 # Setup custom toolbox container 
-podman build --squash -t localhost/apps-toolbox:latest ../toolbox
-toolbox create -i localhost/apps-toolbox:latest apps-toolbox
+toolbox create -i ghcr.io/notswedishbacon/fedora -c toolbox
 
 # Setup toolbox-export script
 curl https://raw.githubusercontent.com/mrvladus/toolbox-export/main/toolbox-export.py --create-dirs -o ~/.local/bin/toolbox-export && chmod +x ~/.local/bin/toolbox-export
 
-# Enter toolbox and install apps
-toolbox run -c apps-toolbox toolbox-export Z-Library
-toolbox run -c apps-toolbox toolbox-export code
-toolbox run -c apps-toolbox ./02-toolbox.sh
+# Enter toolbox and export desktop files
+toolbox run -c toolbox toolbox-export Z-Library
+
+#Export Code
+toolbox run -c toolbox ./02-code.sh
 
 echo "All done!"
