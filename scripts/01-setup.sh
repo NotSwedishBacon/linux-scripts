@@ -34,7 +34,8 @@ flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.mozilla.firefox &&
-flatpak install flathub -y org.mozilla.thunderbird
+flatpak install flathub -y org.mozilla.thunderbird &&
+flatpak install flathub -y com.visualstudio.code
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -65,28 +66,12 @@ chmod +x "$HOME/.local/share/applications/discord.desktop"
 update-desktop-database "$HOME/.local/share/applications"
 rm -f "$HOME/Downloads/discord.tar.gz"
 
-# Install sysexts manager instead of layering
-VERSION="0.3.3" # sysexts-manager version
-VERSION_ID="44" # Fedora release
-ARCH="x86-64"   # or arm64
-URL="https://github.com/travier/sysexts-manager/releases/download/sysexts-manager/"
-NAME="sysexts-manager-${VERSION}-${VERSION_ID}-${ARCH}.raw"
-sudo install -d -m 0755 -o 0 -g 0 "/var/lib/extensions"{,.d} "/run/extensions"
-curl --silent --fail --location "${URL}/${NAME}" \
-    | sudo bash -c "cat > /var/lib/extensions.d/${NAME}"
-sudo ln -snf "/var/lib/extensions.d/${NAME}" "/var/lib/extensions/sysexts-manager.raw"
-sudo restorecon -RFv "/var/lib/extensions"{,.d} "/run/extensions"
-sudo systemctl enable systemd-sysext.service
-sudo systemctl restart systemd-sysext.service
+# Install Distrobox to home directory
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local
 
-# Enable my sysexts
-sudo sysexts-manager add distrobox https://extensions.fcos.fr/fedora
-sudo sysexts-manager add fastfetch https://extensions.fcos.fr/fedora
-sudo sysexts-manager add vscode https://extensions.fcos.fr/community
-sudo sysexts-manager update
-sudo sysexts-manager enable distrobox
-sudo sysexts-manager enable fastfetch
-sudo sysexts-manager enable vscode
-sudo sysexts-manager refresh
+# Allow Flatpak VS Code to connect to our distrobox container
+# See https://distrobox.it/posts/integrate_vscode_distrobox/
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/extras/podman-host -o ~/.local/bin/podman-host
+chmod +x ~/.local/bin/podman-host
 
 echo "All done!"
