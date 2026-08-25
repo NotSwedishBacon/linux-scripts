@@ -27,6 +27,7 @@ flatpak install flathub -y org.kde.okular &&
 flatpak install flathub -y org.kde.skanpage &&
 flatpak install flathub -y org.kde.krita &&
 flatpak install flathub -y org.kde.kate &&
+flatpak install flathub -y io.github.DenysMb.Kontainer &&
 
 # non KDE apps
 flatpak install flathub -y io.github.shiftey.Desktop &&
@@ -63,5 +64,29 @@ EOF
 chmod +x "$HOME/.local/share/applications/discord.desktop"
 update-desktop-database "$HOME/.local/share/applications"
 rm -f "$HOME/Downloads/discord.tar.gz"
+
+# Install sysexts manager instead of layering
+VERSION="0.3.3" # sysexts-manager version
+VERSION_ID="44" # Fedora release
+ARCH="x86-64"   # or arm64
+URL="https://github.com/travier/sysexts-manager/releases/download/sysexts-manager/"
+NAME="sysexts-manager-${VERSION}-${VERSION_ID}-${ARCH}.raw"
+sudo install -d -m 0755 -o 0 -g 0 "/var/lib/extensions"{,.d} "/run/extensions"
+curl --silent --fail --location "${URL}/${NAME}" \
+    | sudo bash -c "cat > /var/lib/extensions.d/${NAME}"
+sudo ln -snf "/var/lib/extensions.d/${NAME}" "/var/lib/extensions/sysexts-manager.raw"
+sudo restorecon -RFv "/var/lib/extensions"{,.d} "/run/extensions"
+sudo systemctl enable systemd-sysext.service
+sudo systemctl restart systemd-sysext.service
+
+# Enable my sysexts
+sudo sysexts-manager add distrobox https://extensions.fcos.fr/fedora
+sudo sysexts-manager add fastfetch https://extensions.fcos.fr/fedora
+sudo sysexts-manager add vscode https://extensions.fcos.fr/community
+sudo sysexts-manager update
+sudo sysexts-manager enable distrobox
+sudo sysexts-manager enable fastfetch
+sudo sysexts-manager enable vscode
+sudo sysexts-manager refresh
 
 echo "All done!"
