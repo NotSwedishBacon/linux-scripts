@@ -67,11 +67,11 @@ update-desktop-database "$HOME/.local/share/applications"
 rm -f "$HOME/Downloads/discord.tar.gz"
 
 # Install Distrobox to home directory
-curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix $HOME/.local
 
 # Allow Flatpak VS Code to connect to our distrobox container
 # See https://distrobox.it/posts/integrate_vscode_distrobox/
-curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/extras/podman-host -o ~/.local/bin/podman-host
-chmod +x ~/.local/bin/podman-host
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/extras/podman-host -o $HOME/.local/bin/podman-host
+chmod +x $HOME/.local/bin/podman-host
 
 echo "All done!"
