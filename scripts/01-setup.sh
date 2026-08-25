@@ -33,8 +33,7 @@ flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.mozilla.firefox &&
-flatpak install flathub -y org.mozilla.thunderbird &&
-flatpak install flathub -y com.discordapp.Discord
+flatpak install flathub -y org.mozilla.thunderbird
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -42,20 +41,27 @@ sudo cp /usr/share/applications/org.mozilla.firefox.desktop /usr/local/share/app
 sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.firefox.desktop
 sudo update-desktop-database /usr/local/share/applications/
 
-# Autostart Discord
-mkdir -p ~/.config/autostart
-ln -s "$(flatpak info -l com.discordapp.Discord//stable | sed 's#/app/.*#/exports/share/applications/com.discordapp.Discord.desktop#')" ~/.config/autostart
-
-# Setup custom toolbox container 
-toolbox create -i ghcr.io/notswedishbacon/fedora -c toolbox
-
-# Setup toolbox-export script
-curl https://raw.githubusercontent.com/mrvladus/toolbox-export/main/toolbox-export.py --create-dirs -o ~/.local/bin/toolbox-export && chmod +x ~/.local/bin/toolbox-export
-
-# Enter toolbox and export desktop files
-toolbox run -c toolbox toolbox-export Z-Library
-
-#Export Code
-toolbox run -c toolbox ./02-code.sh
+# Install official Discord client
+mkdir -p "$HOME/.local/share/discord"
+mkdir -p "$HOME/.local/share/icons/hicolor/256x256/apps"
+mkdir -p "$HOME/.local/share/applications"
+curl -L -o "$HOME/Downloads/discord.tar.gz" "https://discord.com/api/download?platform=linux&format=tar.gz"
+tar -xvf "$HOME/Downloads/discord.tar.gz" -C "$HOME/.local/share/discord/" --strip-components=1
+ln -sf "$HOME/.local/share/discord/discord.png" "$HOME/.local/share/icons/hicolor/256x256/apps/discord.png"
+cat << EOF > "$HOME/.local/share/applications/discord.desktop"
+[Desktop Entry]
+Name=Discord
+StartupWMClass=discord
+Comment=All-in-one voice and text chat for gamers that's free, secure, and works on both your desktop and phone.
+GenericName=Internet Messenger
+Exec=$HOME/.local/share/discord/discord
+Icon=discord
+Type=Application
+Categories=Network;InstantMessaging;
+Path=$HOME/.local/share/discord
+EOF
+chmod +x "$HOME/.local/share/applications/discord.desktop"
+update-desktop-database "$HOME/.local/share/applications"
+rm -f "$HOME/Downloads/discord.tar.gz"
 
 echo "All done!"
