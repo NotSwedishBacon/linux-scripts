@@ -74,4 +74,16 @@ curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -
 curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/extras/podman-host -o $HOME/.local/bin/podman-host
 chmod +x $HOME/.local/bin/podman-host
 
+# Install remote-contaners extension
+flatpak run --command=sh com.visualstudio.code -c \
+"/app/extra/vscode/bin/code --install-extension ms-vscode-remote.remote-containers"
+
+# Tell VS Code where Podman lives
+mkdir -p $HOME/.var/app/com.visualstudio.code/config/Code/User
+cat <<\EOF > "$HOME/.var/app/com.visualstudio.code/config/Code/User/settings.json"
+{
+    "dev.containers.dockerPath": "$HOME/.local/bin/podman-host"
+}
+EOF
+
 echo "All done!"
