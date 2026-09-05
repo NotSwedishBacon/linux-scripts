@@ -44,12 +44,16 @@ flatpak install flathub -y io.github.flattool.Warehouse &&
 flatpak install flathub -y com.github.tchx84.Flatseal &&
 flatpak install flathub -y io.podman_desktop.PodmanDesktop &&
 flatpak install flathub -y com.visualstudio.code &&
-flatpak install flathub -y com.discordapp.Discord
+flatpak install flathub -y com.discordapp.Discord &&
+flatpak install flathub -y com.ranfdev.DistroShelf
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
 sudo cp /usr/share/applications/org.mozilla.firefox.desktop /usr/local/share/applications/
 sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.firefox.desktop
 sudo update-desktop-database /usr/local/share/applications/
+
+# Install Distrobox
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local
 
 echo "All done!"
