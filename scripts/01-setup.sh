@@ -20,22 +20,24 @@ sudo flatpak remote-delete fedora
 sudo flatpak remote-delete fedora-testing
 
 # Install my flathub apps
-# KDE apps
-flatpak install flathub -y org.kde.gwenview &&
-flatpak install flathub -y org.kde.kcalc &&
-flatpak install flathub -y org.kde.okular &&
-flatpak install flathub -y org.kde.skanpage &&
-flatpak install flathub -y org.kde.krita &&
-flatpak install flathub -y org.kde.kate &&
-flatpak install flathub -y io.github.DenysMb.Kontainer &&
-
-# non KDE apps
+# Gnome apps
+flatpak install flathub -y org.gnome.Calculator &&
+flatpak install flathub -y org.gnome.Calendar &&
+flatpak install flathub -y org.gnome.Extensions &&
+flatpak install flathub -y org.gnome.TextEditor &&
+flatpak install flathub -y org.gnome.Loupe &&
+flatpak install flathub -y org.gnome.Logs &&
+flatpak install flathub -y org.gnome.NautilusPreviewer &&
+flatpak install flathub -y org.gnome.Papers &&
+flatpak install flathub -y org.gnome.Weather &&
+# non gnome apps
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
+flatpak install flathub -y org.gimp.GIMP &&
+flatpak install flathub -y org.inkscape.Inkscape &&
 flatpak install flathub -y org.mozilla.firefox &&
-flatpak install flathub -y org.mozilla.thunderbird &&
-flatpak install flathub -y com.visualstudio.code
+flatpak install flathub -y org.mozilla.thunderbird 
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -43,7 +45,7 @@ sudo cp /usr/share/applications/org.mozilla.firefox.desktop /usr/local/share/app
 sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.firefox.desktop
 sudo update-desktop-database /usr/local/share/applications/
 
-# Install official Discord client
+# Install official Discord client 
 mkdir -p "$HOME/.local/share/discord"
 mkdir -p "$HOME/.local/share/icons/hicolor/256x256/apps"
 mkdir -p "$HOME/.local/share/applications"
@@ -65,25 +67,5 @@ EOF
 chmod +x "$HOME/.local/share/applications/discord.desktop"
 update-desktop-database "$HOME/.local/share/applications"
 rm -f "$HOME/Downloads/discord.tar.gz"
-
-# Install Distrobox to home directory
-curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix $HOME/.local
-
-# Allow Flatpak VS Code to connect to our distrobox container
-# See https://distrobox.it/posts/integrate_vscode_distrobox/
-curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/extras/podman-host -o $HOME/.local/bin/podman-host
-chmod +x $HOME/.local/bin/podman-host
-
-# Install remote-contaners extension
-flatpak run --command=sh com.visualstudio.code -c \
-"/app/extra/vscode/bin/code --install-extension ms-vscode-remote.remote-containers"
-
-# Tell VS Code where Podman lives
-mkdir -p $HOME/.var/app/com.visualstudio.code/config/Code/User
-cat <<\EOF > "$HOME/.var/app/com.visualstudio.code/config/Code/User/settings.json"
-{
-    "dev.containers.dockerPath": "$HOME/.local/bin/podman-host"
-}
-EOF
 
 echo "All done!"
