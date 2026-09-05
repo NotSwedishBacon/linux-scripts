@@ -37,7 +37,11 @@ flatpak install flathub -y org.telegram.desktop &&
 flatpak install flathub -y org.gimp.GIMP &&
 flatpak install flathub -y org.inkscape.Inkscape &&
 flatpak install flathub -y org.mozilla.firefox &&
-flatpak install flathub -y org.mozilla.thunderbird 
+flatpak install flathub -y org.mozilla.thunderbird &&
+flatpak install flathub -y io.missioncenter.MissionCenter &&
+flatpak install flathub -y io.github.flattool.Warehouse &&
+flatpak install flathub -y com.github.tchx84.Flatseal &&
+flatpak install flathub -y io.podman_desktop.PodmanDesktop
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
