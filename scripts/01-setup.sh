@@ -30,6 +30,7 @@ flatpak install flathub -y org.gnome.Logs &&
 flatpak install flathub -y org.gnome.NautilusPreviewer &&
 flatpak install flathub -y org.gnome.Papers &&
 flatpak install flathub -y org.gnome.Weather &&
+
 # non gnome apps
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
@@ -41,39 +42,14 @@ flatpak install flathub -y org.mozilla.thunderbird &&
 flatpak install flathub -y io.missioncenter.MissionCenter &&
 flatpak install flathub -y io.github.flattool.Warehouse &&
 flatpak install flathub -y com.github.tchx84.Flatseal &&
-flatpak install flathub -y io.podman_desktop.PodmanDesktop
+flatpak install flathub -y io.podman_desktop.PodmanDesktop &&
+flatpak install flathub -y com.visualstudio.code &&
+flatpak install flathub -y com.discordapp.Discord
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
 sudo cp /usr/share/applications/org.mozilla.firefox.desktop /usr/local/share/applications/
 sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.firefox.desktop
 sudo update-desktop-database /usr/local/share/applications/
-
-# Install official Discord client 
-mkdir -p "$HOME/.local/share/discord"
-mkdir -p "$HOME/.local/share/icons/hicolor/256x256/apps"
-mkdir -p "$HOME/.local/share/applications"
-curl -L -o "$HOME/Downloads/discord.tar.gz" "https://discord.com/api/download?platform=linux&format=tar.gz"
-tar -xvf "$HOME/Downloads/discord.tar.gz" -C "$HOME/.local/share/discord/" --strip-components=1
-ln -sf "$HOME/.local/share/discord/discord.png" "$HOME/.local/share/icons/hicolor/256x256/apps/discord.png"
-cat << EOF > "$HOME/.local/share/applications/discord.desktop"
-[Desktop Entry]
-Name=Discord
-StartupWMClass=discord
-Comment=All-in-one voice and text chat for gamers that's free, secure, and works on both your desktop and phone.
-GenericName=Internet Messenger
-Exec=$HOME/.local/share/discord/discord
-Icon=discord
-Type=Application
-Categories=Network;InstantMessaging;
-Path=$HOME/.local/share/discord
-EOF
-chmod +x "$HOME/.local/share/applications/discord.desktop"
-update-desktop-database "$HOME/.local/share/applications"
-rm -f "$HOME/Downloads/discord.tar.gz"
-
-# Install VS Code and Distrobox
-echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
-sudo rpm-ostree install -y code distrobox
 
 echo "All done!"
