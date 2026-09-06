@@ -41,7 +41,8 @@ flatpak install flathub -y io.github.flattool.Warehouse &&
 flatpak install flathub -y com.github.tchx84.Flatseal &&
 flatpak install flathub -y io.podman_desktop.PodmanDesktop &&
 flatpak install flathub -y io.github.DenysMb.Kontainer &&
-flatpak install flathub -y com.discordapp.Discord
+flatpak install flathub -y com.discordapp.Discord &&
+flatpak install flathub -y org.libreoffice.LibreOffice
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
