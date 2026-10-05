@@ -30,8 +30,8 @@ curl -sS https://raw.githubusercontent.com/NotSwedishBacon/linux-scripts/refs/he
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak remote-modify --enable flathub
 sudo flatpak uninstall --all -y
-sudo flatpak remote-delete fedora
 sudo flatpak remote-delete fedora-testing
+sudo flatpak remote-delete fedora
 
 # Install my flathub apps
 # Gnome apps
