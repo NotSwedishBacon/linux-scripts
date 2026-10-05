@@ -66,4 +66,7 @@ sudo update-desktop-database /usr/local/share/applications/
 # Install Distrobox
 curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local
 
+# Disable nag
+gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
+
 echo "All done!"
