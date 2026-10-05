@@ -12,6 +12,20 @@ context.properties = {
 EOF
 systemctl --user restart pipewire pipewire-pulse;
 
+# Install Starship prompt
+curl -sS https://starship.rs/install.sh | sh
+sudo tee "/etc/profile.d/90-starship.sh" > /dev/null <<'EOF'
+# shellcheck shell=sh
+command -v starship >/dev/null 2>&1 || return 0
+
+if [ "$(basename "$(readlink /proc/$$/exe)")" = "bash" ]; then
+  eval "$(starship init bash)"
+fi
+EOF
+
+# Copy toml config
+
+
 # Setup flathub and remove fedora remotes
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak remote-modify --enable flathub
