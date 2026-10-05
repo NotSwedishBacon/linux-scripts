@@ -69,4 +69,9 @@ curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -
 # Disable nag
 gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
 
+# personal settings
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface show-battery-percentage true
+gsettings set org.gnome.desktop.calendar show-weekdate true
+
 echo "All done!"
