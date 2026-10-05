@@ -24,7 +24,7 @@ fi
 EOF
 
 # Copy toml config
-
+curl -sS https://raw.githubusercontent.com/NotSwedishBacon/linux-scripts/refs/heads/main/files/starship.toml -o ~/.config/starship.toml
 
 # Setup flathub and remove fedora remotes
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
