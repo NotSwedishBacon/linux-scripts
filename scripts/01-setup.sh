@@ -34,28 +34,16 @@ sudo flatpak remote-delete fedora-testing
 sudo flatpak remote-delete fedora
 
 # Install my flathub apps
-# Gnome apps
+# KDE apps
 flatpak install flathub -y org.gnome.Calculator &&
-flatpak install flathub -y org.gnome.Calendar &&
-flatpak install flathub -y org.gnome.Extensions &&
-flatpak install flathub -y org.gnome.TextEditor &&
-flatpak install flathub -y org.gnome.Loupe &&
-flatpak install flathub -y org.gnome.Logs &&
-flatpak install flathub -y org.gnome.NautilusPreviewer &&
-flatpak install flathub -y org.gnome.Papers &&
-flatpak install flathub -y org.gnome.Weather &&
-flatpak install flathub -y org.gnome.Showtime &&
-flatpak install flathub -y org.gnome.Snapshot &&
-flatpak install flathub -y org.gnome.baobab &&
-flatpak install flathub -y org.gnome.SimpleScan &&
-flatpak install flathub -y org.gnome.clocks &&
-flatpak install flathub -y org.gnome.Maps &&
-flatpak install flathub -y org.gnome.Contacts &&
-flatpak install flathub -y org.gnome.Decibels &&
-flatpak install flathub -y org.gnome.font-viewer &&
-flatpak install flathub -y org.gnome.Characters &&
+flatpak install flathub -y org.kde.elisa &&
+flatpak install flathub -y org.kde.gwenview &&
+flatpak install flathub -y org.kde.kcalc &&
+flatpak install flathub -y org.kde.kolourpaint &&
+flatpak install flathub -y org.kde.okular &&
+flatpak install flathub -y org.kde.skanpage &&
 
-# non gnome apps
+# non KDE apps
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y org.telegram.desktop &&
@@ -67,7 +55,7 @@ flatpak install flathub -y io.missioncenter.MissionCenter &&
 flatpak install flathub -y io.github.flattool.Warehouse &&
 flatpak install flathub -y com.github.tchx84.Flatseal &&
 flatpak install flathub -y io.podman_desktop.PodmanDesktop &&
-flatpak install flathub -y com.ranfdev.DistroShelf &&
+flatpak install flathub -y io.github.DenysMb.Kontainer &&
 flatpak install flathub -y com.discordapp.Discord &&
 flatpak install flathub -y org.libreoffice.LibreOffice
 
@@ -77,14 +65,11 @@ sudo cp /usr/share/applications/org.mozilla.firefox.desktop /usr/local/share/app
 sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.firefox.desktop
 sudo update-desktop-database /usr/local/share/applications/
 
+# Auto start Discord
+mkdir -p ~/.config/autostart
+ln -s "$(flatpak info -l com.discordapp.Discord//stable | sed 's#/app/.*#/exports/share/applications/com.discordapp.Discord.desktop#')" ~/.config/autostart
+
 # Install Distrobox
 curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local
-
-# Disable nag
-gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
-
-# personal settings
-gsettings set org.gnome.desktop.interface show-battery-percentage true
-gsettings set org.gnome.desktop.calendar show-weekdate true
 
 echo "All done!"
