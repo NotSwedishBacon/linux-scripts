@@ -68,10 +68,16 @@ flatpak install flathub -y org.mozilla.thunderbird &&
 flatpak install flathub -y io.missioncenter.MissionCenter &&
 flatpak install flathub -y io.github.flattool.Warehouse &&
 flatpak install flathub -y com.github.tchx84.Flatseal &&
-flatpak install flathub -y io.podman_desktop.PodmanDesktop &&
-flatpak install flathub -y com.ranfdev.DistroShelf &&
 flatpak install flathub -y com.discordapp.Discord &&
-flatpak install flathub -y org.libreoffice.LibreOffice
+flatpak install flathub -y org.libreoffice.LibreOffice &&
+
+# Flatpak VS Code SDK's    
+flatpak install flathub -y com.visualstudio.code.tool.git-lfs &&
+flatpak install flathub -y com.visualstudio.code.tool.podman &&
+flatpak install flathub -y org.freedesktop.Sdk.Extension.node26    
+
+# Enable SDK's
+FLATPAK_ENABLE_SDK_EXT=node26 flatpak run com.visualstudio.code
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -82,9 +88,6 @@ sudo update-desktop-database /usr/local/share/applications/
 # Auto start Discord
 mkdir -p ~/.config/autostart
 ln -s "$(flatpak info -l com.discordapp.Discord//stable | sed 's#/app/.*#/exports/share/applications/com.discordapp.Discord.desktop#')" ~/.config/autostart
-
-# Install Distrobox
-curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local
 
 # Disable nag
 gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
