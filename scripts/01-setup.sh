@@ -56,7 +56,7 @@ flatpak install flathub -y org.gnome.font-viewer &&
 flatpak install flathub -y org.gnome.Characters &&
 
 # non gnome apps
-flatpak install flathub -y com.visualstudio.code &&
+flatpak install flathub -y com.vscodium.codium &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y com.bambulab.BambuStudio &&
@@ -77,7 +77,7 @@ flatpak install flathub -y com.visualstudio.code.tool.podman &&
 flatpak install flathub -y org.freedesktop.Sdk.Extension.node26    
 
 # Enable SDK's
-FLATPAK_ENABLE_SDK_EXT=node26 flatpak run com.visualstudio.code
+FLATPAK_ENABLE_SDK_EXT=node26 flatpak run com.vscodium.codium
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
