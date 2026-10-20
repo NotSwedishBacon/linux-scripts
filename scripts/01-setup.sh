@@ -42,7 +42,6 @@ sudo flatpak remote-delete fedora
 # Gnome apps
 flatpak install flathub -y org.gnome.Calculator &&
 flatpak install flathub -y org.gnome.Calendar &&
-flatpak install flathub -y org.gnome.Extensions &&
 flatpak install flathub -y org.gnome.TextEditor &&
 flatpak install flathub -y org.gnome.Loupe &&
 flatpak install flathub -y org.gnome.Logs &&
@@ -61,6 +60,7 @@ flatpak install flathub -y org.gnome.font-viewer &&
 flatpak install flathub -y org.gnome.Characters &&
 
 # non gnome apps
+flatpak install flathub -y com.mattjakeman.ExtensionManager &&
 flatpak install flathub -y com.vscodium.codium &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
