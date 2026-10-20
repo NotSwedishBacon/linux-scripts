@@ -31,6 +31,29 @@ mkdir -p ~/.local/share/fonts/AdwaitaMono
 curl -sSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/AdwaitaMono.tar.xz | tar -xJ -C ~/.local/share/fonts/AdwaitaMono
 fc-cache -f ~/.local/share/fonts
 
+# Install Homebrew
+if ! command -v brew >/dev/null 2>&1; then
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+sudo tee "/etc/profile.d/91-homebrew.sh" > /dev/null <<'EOF'
+# shellcheck shell=sh
+if [ -d "/home/linuxbrew/.linuxbrew" ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+EOF
+
+# Tap ublue-os/tap
+brew tap ublue-os/tap
+
+# Install brew packages
+brew install antigravity-linux
+brew install vscodium-linux
+
 # Setup flathub and remove fedora remotes
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak remote-modify --enable flathub
@@ -61,7 +84,6 @@ flatpak install flathub -y org.gnome.Characters &&
 
 # non gnome apps
 flatpak install flathub -y com.mattjakeman.ExtensionManager &&
-flatpak install flathub -y com.vscodium.codium &&
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y com.bambulab.BambuStudio &&
@@ -74,15 +96,7 @@ flatpak install flathub -y io.missioncenter.MissionCenter &&
 flatpak install flathub -y io.github.flattool.Warehouse &&
 flatpak install flathub -y com.github.tchx84.Flatseal &&
 flatpak install flathub -y com.discordapp.Discord &&
-flatpak install flathub -y org.libreoffice.LibreOffice &&
-
-# Flatpak VS Code SDK's    
-flatpak install flathub -y com.visualstudio.code.tool.git-lfs &&
-flatpak install flathub -y com.visualstudio.code.tool.podman &&
-flatpak install flathub -y org.freedesktop.Sdk.Extension.node26    
-
-# Enable SDK's
-FLATPAK_ENABLE_SDK_EXT=node26 flatpak run com.vscodium.codium
+flatpak install flathub -y org.libreoffice.LibreOffice  
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
