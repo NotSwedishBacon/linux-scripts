@@ -26,6 +26,11 @@ EOF
 # Copy toml config
 curl -sS https://raw.githubusercontent.com/NotSwedishBacon/linux-scripts/refs/heads/main/files/starship.toml -o ~/.config/starship.toml
 
+# Download and install AdwaitaMono Nerd Font
+mkdir -p ~/.local/share/fonts/AdwaitaMono
+curl -sSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/AdwaitaMono.tar.xz | tar -xJ -C ~/.local/share/fonts/AdwaitaMono
+fc-cache -f ~/.local/share/fonts
+
 # Setup flathub and remove fedora remotes
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 sudo flatpak remote-modify --enable flathub
