@@ -49,6 +49,7 @@ EOF
 
 # Tap ublue-os/tap
 brew tap ublue-os/tap
+brew trust ublue-os/tap
 
 # Install brew packages
 brew install antigravity-linux
