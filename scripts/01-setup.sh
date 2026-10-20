@@ -96,12 +96,7 @@ flatpak install flathub -y io.missioncenter.MissionCenter &&
 flatpak install flathub -y io.github.flattool.Warehouse &&
 flatpak install flathub -y com.github.tchx84.Flatseal &&
 flatpak install flathub -y com.discordapp.Discord &&
-flatpak install flathub -y org.libreoffice.LibreOffice &&
-
-# Flatpak VS Code SDK's    
-flatpak install flathub -y com.visualstudio.code.tool.git-lfs &&
-flatpak install flathub -y com.visualstudio.code.tool.podman &&
-flatpak install flathub -y org.freedesktop.Sdk.Extension.node26    
+flatpak install flathub -y org.libreoffice.LibreOffice  
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
