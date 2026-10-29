@@ -23,6 +23,7 @@ flatpak uninstall --noninteractive --delete-data -y org.fedoraproject.MediaWrite
 flatpak uninstall --noninteractive --delete-data -y org.fkoehler.KTailctl &&
 flatpak uninstall --noninteractive --delete-data -y org.gnome.DejaDup &&
 flatpak uninstall --noninteractive --delete-data -y org.kde.qrca &&
+flatpak uninstall --noninteractive --delete-data -y org.kde.kontact &&
 
 # Install my flathub apps
 flatpak install flathub --noninteractive -y io.github.shiftey.Desktop &&
