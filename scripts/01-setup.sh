@@ -27,8 +27,8 @@ EOF
 curl -sS https://raw.githubusercontent.com/NotSwedishBacon/linux-scripts/refs/heads/main/files/starship.toml -o ~/.config/starship.toml
 
 # Download and install AdwaitaMono Nerd Font
-mkdir -p ~/.local/share/fonts/AdwaitaMono
-curl -sSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/AdwaitaMono.tar.xz | tar -xJ -C ~/.local/share/fonts/AdwaitaMono
+mkdir -p ~/.local/share/fonts/Noto
+curl -sSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Noto.tar.xz | tar -xJ -C ~/.local/share/fonts/Noto
 fc-cache -f ~/.local/share/fonts
 
 # Install Homebrew
@@ -53,7 +53,7 @@ brew trust ublue-os/tap
 
 # Install brew packages
 brew install antigravity-linux
-brew install vscodium-linux
+brew install visual-studio-code-linux
 
 # Setup flathub and remove fedora remotes
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -63,28 +63,15 @@ sudo flatpak remote-delete fedora-testing
 sudo flatpak remote-delete fedora
 
 # Install my flathub apps
-# Gnome apps
-flatpak install flathub -y org.gnome.Calculator &&
-flatpak install flathub -y org.gnome.Calendar &&
-flatpak install flathub -y org.gnome.TextEditor &&
-flatpak install flathub -y org.gnome.Loupe &&
-flatpak install flathub -y org.gnome.Logs &&
-flatpak install flathub -y org.gnome.NautilusPreviewer &&
-flatpak install flathub -y org.gnome.Papers &&
-flatpak install flathub -y org.gnome.Weather &&
-flatpak install flathub -y org.gnome.Showtime &&
-flatpak install flathub -y org.gnome.Snapshot &&
-flatpak install flathub -y org.gnome.baobab &&
-flatpak install flathub -y org.gnome.SimpleScan &&
-flatpak install flathub -y org.gnome.clocks &&
-flatpak install flathub -y org.gnome.Maps &&
-flatpak install flathub -y org.gnome.Contacts &&
-flatpak install flathub -y org.gnome.Decibels &&
-flatpak install flathub -y org.gnome.font-viewer &&
-flatpak install flathub -y org.gnome.Characters &&
+# KDE apps
+flatpak install flathub -y org.kde.elisa &&
+flatpak install flathub -y org.kde.gwenview &&
+flatpak install flathub -y org.kde.kcalc &&
+flatpak install flathub -y org.kde.kolourpaint &&
+flatpak install flathub -y org.kde.okular &&
+flatpak install flathub -y org.kde.skanpage &&
 
-# non gnome apps
-flatpak install flathub -y com.mattjakeman.ExtensionManager &&
+# Non KDE apps
 flatpak install flathub -y io.github.shiftey.Desktop &&
 flatpak install flathub -y com.prusa3d.PrusaSlicer &&
 flatpak install flathub -y com.bambulab.BambuStudio &&
@@ -108,12 +95,5 @@ sudo update-desktop-database /usr/local/share/applications/
 # Auto start Discord
 mkdir -p ~/.config/autostart
 ln -s "$(flatpak info -l com.discordapp.Discord//stable | sed 's#/app/.*#/exports/share/applications/com.discordapp.Discord.desktop#')" ~/.config/autostart
-
-# Disable nag
-gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
-
-# personal settings
-gsettings set org.gnome.desktop.interface show-battery-percentage true
-gsettings set org.gnome.desktop.calendar show-weekdate true
 
 echo "All done!"
