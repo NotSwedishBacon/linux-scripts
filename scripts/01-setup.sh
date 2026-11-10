@@ -40,23 +40,23 @@ sudo flatpak remote-delete fedora
 
 # Install my flathub apps
 # KDE apps
-flatpak install flathub -y org.kde.elisa &&
-flatpak install flathub -y org.kde.gwenview &&
-flatpak install flathub -y org.kde.kcalc &&
-flatpak install flathub -y org.kde.kolourpaint &&
-flatpak install flathub -y org.kde.okular &&
-flatpak install flathub -y org.kde.skanpage &&
-flatpak install flathub -y org.kde.krita &&
-flatpak install flathub -y org.kde.kate &&
-flatpak install flathub -y org.kde.kontact &&
+flatpak install flathub -y --noninteractive org.kde.elisa &&
+flatpak install flathub -y --noninteractive org.kde.gwenview &&
+flatpak install flathub -y --noninteractive org.kde.kcalc &&
+flatpak install flathub -y --noninteractive org.kde.okular &&
+flatpak install flathub -y --noninteractive org.kde.skanpage &&
+flatpak install flathub -y --noninteractive org.kde.krita &&
+flatpak install flathub -y --noninteractive org.kde.kate &&
+flatpak install flathub -y --noninteractive org.kde.kontact &&
+flatpak install flathub -y --noninteractive org.kde.filelight &&
+flatpak install flathub -y --noninteractive org.kde.ark &&
+flatpak install flathub -y --noninteractive org.kde.kommit &&
 
 # non KDE apps
-flatpak install flathub -y --noninteractive io.github.shiftey.Desktop &&
 flatpak install flathub -y --noninteractive com.bambulab.BambuStudio &&
 flatpak install flathub -y --noninteractive org.telegram.desktop &&
 flatpak install flathub -y --noninteractive org.mozilla.firefox &&
-flatpak install flathub -y --noninteractive com.discordapp.Discord &&
-flatpak install flathub -y --noninteractive io.github.DenysMb.Kontainer
+flatpak install flathub -y --noninteractive com.discordapp.Discord 
 
 # Disable built-in firefox
 sudo mkdir -p /usr/local/share/applications
@@ -80,7 +80,6 @@ sudo systemctl restart systemd-sysext.service
 
 # Download sysexts
 sudo sysexts-manager add btop https://extensions.fcos.fr/fedora &&
-sudo sysexts-manager add distrobox https://extensions.fcos.fr/fedora &&
 sudo sysexts-manager add fastfetch https://extensions.fcos.fr/fedora &&
 sudo sysexts-manager add gh https://extensions.fcos.fr/fedora &&
 sudo sysexts-manager add git-lfs https://extensions.fcos.fr/fedora &&
@@ -92,7 +91,6 @@ sudo sysexts-manager add vscode https://extensions.fcos.fr/community &&
 sudo sysexts-manager update &&
 
 sudo sysexts-manager enable btop &&
-sudo sysexts-manager enable distrobox &&
 sudo sysexts-manager enable fastfetch &&
 sudo sysexts-manager enable gh &&
 sudo sysexts-manager enable git-lfs &&
