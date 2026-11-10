@@ -65,41 +65,45 @@ sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.
 sudo update-desktop-database /usr/local/share/applications/
 
 # Install Sysexts
-VERSION="0.3.4" # sysexts-manager version
-VERSION_ID="45" # Fedora release
-ARCH="x86-64"   # or arm64
-URL="https://github.com/travier/sysexts-manager/releases/download/sysexts-manager/"
-NAME="sysexts-manager-${VERSION}-${VERSION_ID}-${ARCH}.raw"
-sudo install -d -m 0755 -o 0 -g 0 "/var/lib/extensions"{,.d} "/run/extensions"
-curl --silent --fail --location "${URL}/${NAME}" \
-    | sudo bash -c "cat > /var/lib/extensions.d/${NAME}"
-sudo ln -snf "/var/lib/extensions.d/${NAME}" "/var/lib/extensions/sysexts-manager.raw"
-sudo restorecon -RFv "/var/lib/extensions"{,.d} "/run/extensions"
-sudo systemctl enable systemd-sysext.service
+sudo install -d -m 0755 -o 0 -g 0 "/var/lib/extensions" "/var/lib/extensions.d"
+sudo restorecon -RFv "/var/lib/extensions" "/var/lib/extensions.d"
+sudo systemctl enable --now systemd-sysext.service
+
+# Download Fedora sysexts
+install_sysext() {
+  SYSEXT="${1}"
+  URL="https://extensions.fcos.fr/fedora"
+  sudo install -d -m 0755 -o 0 -g 0 "/etc/sysupdate.${SYSEXT}.d"
+  sudo restorecon -RFv "/etc/sysupdate.${SYSEXT}.d"
+  curl --silent --fail --location "${URL}/${SYSEXT}.conf" \
+    | sudo tee "/etc/sysupdate.${SYSEXT}.d/${SYSEXT}.transfer"
+  sudo /usr/lib/systemd/systemd-sysupdate update --component "${SYSEXT}"
+}
+
+install_sysext btop 
+install_sysext fastfetch 
+install_sysext gh  
+install_sysext git-lfs 
+install_sysext htop 
+
+# Download Community sysexts
+install_sysext() {
+  SYSEXT="${1}"
+  URL="https://extensions.fcos.fr/community"
+  sudo install -d -m 0755 -o 0 -g 0 "/etc/sysupdate.${SYSEXT}.d"
+  sudo restorecon -RFv "/etc/sysupdate.${SYSEXT}.d"
+  curl --silent --fail --location "${URL}/${SYSEXT}.conf" \
+    | sudo tee "/etc/sysupdate.${SYSEXT}.d/${SYSEXT}.conf"
+  sudo /usr/lib/systemd/systemd-sysupdate update --component "${SYSEXT}"
+}
+
+install_sysext bitwarden 
+install_sysext nordvpn-gui 
+install_sysext vscode 
+
+#Enable all sysexts
 sudo systemctl restart systemd-sysext.service
-
-# Download sysexts
-sudo sysexts-manager add btop https://extensions.fcos.fr/fedora &&
-sudo sysexts-manager add fastfetch https://extensions.fcos.fr/fedora &&
-sudo sysexts-manager add gh https://extensions.fcos.fr/fedora &&
-sudo sysexts-manager add git-lfs https://extensions.fcos.fr/fedora &&
-sudo sysexts-manager add htop https://extensions.fcos.fr/fedora &&
-sudo sysexts-manager add bitwarden https://extensions.fcos.fr/community &&
-sudo sysexts-manager add nordvpn-gui https://extensions.fcos.fr/community &&
-sudo sysexts-manager add vscode https://extensions.fcos.fr/community &&
-
-sudo sysexts-manager update &&
-
-sudo sysexts-manager enable btop &&
-sudo sysexts-manager enable fastfetch &&
-sudo sysexts-manager enable gh &&
-sudo sysexts-manager enable git-lfs &&
-sudo sysexts-manager enable htop &&
-sudo sysexts-manager enable bitwarden &&
-sudo sysexts-manager enable nordvpn-gui &&
-sudo sysexts-manager enable vscode &&
-
-sudo sysexts-manager refresh
+systemd-sysext status
 
 # Auto start Discord
 mkdir -p ~/.config/autostart
