@@ -18,8 +18,18 @@ sudo sed -i -e '/^max_parallel_downloads/d' -e '/^\[main\]/a max_parallel_downlo
 # Remove crud
 sudo dnf remove -y kmail kontact kpat kmines kmahjongg kolourpaint akregator krdc krfb neochat dragon elisa-player kamoso mediawriter qrca kmouth kleopatra korganizer kaddressbook
 
-# Install basics
-sudo dnf install -y kate thunderbird langpacks-sv krita
+# Enable RPM Fusion (free and nonfree)
+sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
+sudo dnf install -y rpmfusion-\*-appstream-data
+
+# Setup multimedia and recent Intel iGPU hardware acceleration
+sudo dnf swap -y ffmpeg-free ffmpeg --allowerasing
+sudo dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+sudo dnf install -y mesa-vulkan-drivers vulkan-loader mesa-libGLU libva-utils ffmpeg-libs libva intel-media-driver
+
+# Install apps
+sudo dnf install -y discord telegram-desktop kate thunderbird langpacks-sv krita
 
 # Setup flathub and remove fedora remotes
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
