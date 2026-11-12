@@ -12,24 +12,27 @@ context.properties = {
 EOF
 systemctl --user restart pipewire pipewire-pulse;
 
-# Set 20 downloads at a time
-sudo sed -i -e '/^max_parallel_downloads/d' -e '/^\[main\]/a max_parallel_downloads=20' /etc/dnf/dnf.conf
+# Install Starship prompt
+curl -sS https://starship.rs/install.sh | sh
+sudo tee "/etc/profile.d/90-starship.sh" > /dev/null <<'EOF'
+# shellcheck shell=sh
+command -v starship >/dev/null 2>&1 || return 0
 
-# Remove crud
-sudo dnf remove -y kmail kontact kpat kmines kmahjongg kolourpaint akregator krdc krfb neochat dragon elisa-player kamoso mediawriter qrca kmouth kleopatra korganizer kaddressbook
+if [ "$(basename "$(readlink /proc/$$/exe)")" = "bash" ]; then
+  eval "$(starship init bash)"
+fi
+EOF
 
-# Enable RPM Fusion (free and nonfree)
-sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
-sudo dnf install -y rpmfusion-\*-appstream-data
+# Copy toml config
+curl -sS https://raw.githubusercontent.com/NotSwedishBacon/linux-scripts/refs/heads/main/files/starship.toml -o ~/.config/starship.toml
 
-# Setup multimedia and recent Intel iGPU hardware acceleration
-sudo dnf swap -y ffmpeg-free ffmpeg --allowerasing
-sudo dnf install -y @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
-sudo dnf install -y mesa-vulkan-drivers vulkan-loader mesa-libGLU libva-utils ffmpeg-libs libva intel-media-driver
+# Download and install Noto Nerd Font
+mkdir -p ~/.local/share/fonts/Noto
+curl -sSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Noto.tar.xz | tar -xJ -C ~/.local/share/fonts/Noto
+fc-cache -f ~/.local/share/fonts
 
-# Install apps
-sudo dnf install -y discord telegram-desktop kate thunderbird langpacks-sv krita
+# Install Distrobox 
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh
 
 # Setup flathub and remove fedora remotes
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -38,7 +41,28 @@ sudo flatpak uninstall --all -y --noninteractive
 sudo flatpak remote-delete fedora-testing
 sudo flatpak remote-delete fedora
 
-# Install apps that must be a flatpak
-flatpak install flathub -y --noninteractive com.bambulab.BambuStudio 
+# Install my flathub apps
+# KDE apps
+flatpak install flathub -y --noninteractive org.kde.kcalc &&
+flatpak install flathub -y --noninteractive org.kde.okular &&
+flatpak install flathub -y --noninteractive org.kde.krita &&
+flatpak install flathub -y --noninteractive org.kde.kate &&
+# non KDE apps
+flatpak install flathub -y --noninteractive com.bambulab.BambuStudio &&
+flatpak install flathub -y --noninteractive org.telegram.desktop &&
+flatpak install flathub -y --noninteractive org.mozilla.firefox &&
+flatpak install flathub -y --noninteractive org.mozilla.thunderbird &&
+flatpak install flathub -y --noninteractive com.discordapp.Discord && 
+flatpak install flathub -y --noninteractive io.github.DenysMb.Kontainer
+
+# Disable built-in firefox
+sudo mkdir -p /usr/local/share/applications
+sudo cp /usr/share/applications/org.mozilla.firefox.desktop /usr/local/share/applications/
+sudo sed -i "2a\\NotShowIn=GNOME;KDE" /usr/local/share/applications/org.mozilla.firefox.desktop
+sudo update-desktop-database /usr/local/share/applications/
+
+# Auto start Discord
+mkdir -p ~/.config/autostart
+ln -s "$(flatpak info -l com.discordapp.Discord//stable | sed 's#/app/.*#/exports/share/applications/com.discordapp.Discord.desktop#')" ~/.config/autostart
 
 echo "All done!"
